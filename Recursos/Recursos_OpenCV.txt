@@ -1,0 +1,153 @@
+				OPENCV DOCUMENTACION
+
+..................................CLASE VideoCapture().................................
+Class for video capturing from video files, image sequences or cameras.
+
+1/5
+cv.VideoCapture() -> Metodo constructor por default
+
+Cuando terminemos de trabajar con videos podemos llamar el método "release()" para parar la ejecución del video, técnicamente es el destructor de la clase VideoCapture()
+
+
+El método constructor de esta clase esta pensado para usarse mediante sobrecarga de métodos
+De tal manera podemos usar dicho método de la manera que mejor sea conveniente.
+
+A continuación la lista de sobrecarga de métodos:
+
+2/5
+cv.VideoCapture( filename[, apiPreference]	        ) ->	<VideoCapture object>
+
+Abre un archivo de video o un dispositivo de captura o una transmisión de video IP para la captura de video con API Preference.
+
+<Parameters>
+
+filename	it can be:
+
+-name of video file (eg. video.avi)
+-or image sequence (eg. img_%02d.jpg, which will read samples like img_00.jpg, img_01.jpg, img_02.jpg, ...)
+-or URL of video stream (eg. protocol://host:port/script_name?script_params|auth)
+-or GStreamer pipeline string in gst-launch tool format in case if GStreamer is used as backend Note that each video stream or IP camera feed has its own URL scheme. Please refer to the documentation -of source stream to know the right URL.
+
+apiPreference	preferred Capture API backends to use. 
+Can be used to enforce a specific reader implementation if multiple are available: e.g. cv::CAP_FFMPEG or cv::CAP_IMAGES or cv::CAP_DSHOW.
+
+Checar ---VideoCaptureAPIs---
+
+3/5
+cv.VideoCapture(	filename, apiPreference, params	) ->	<VideoCapture object>
+
+Abre un archivo de video o un dispositivo de captura o una transmisión de video IP para la captura de video con API Preference.
+
+The "params" parameter allows to specify extra parameters encoded as pairs (paramId_1, paramValue_1, paramId_2, paramValue_2, ...). 
+
+Checar las ---VideoCaptureProperties---
+
+4/5
+cv.VideoCapture(	index[, apiPreference]	         ) ->	<VideoCapture object>
+
+Abre la cámara para realizar una video captura.
+
+<Parameters>
+index	id of the video capturing device to open. 
+
+Para abrir la camera nativa del dispositivo pasar el valor "0", si existiera otra camara, sustituir el valor por "1", asi sucesivamente. (to backward compatibility usage of camera_id + domain_offset (CAP_*) is valid when apiPreference is CAP_ANY)
+
+apiPreference	preferred Capture API backends to use. Can be used to enforce a specific reader implementation if multiple are available: e.g. cv::CAP_DSHOW or cv::CAP_MSMF or cv::CAP_V4L.
+
+5/5
+cv.VideoCapture(	index, apiPreference, params	) ->	<VideoCapture object>
+
+Opens a camera for video capturing with API Preference and parameters.
+
+The "params" parameter allows to specify extra parameters encoded as pairs (paramId_1, paramValue_1, paramId_2, paramValue_2, ...).
+
+Checar las ---VideoCaptureProperties---
+
+
+		     METODOS PERTENECIENTE A LA CLASE VideoCapture()
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>set()
+Python:
+cv.VideoCapture.set(propId, value	) -> retval
+
+Sets a property in the VideoCapture.
+
+<Parameters>
+
+propId	Property identifier from cv::VideoCaptureProperties (eg. cv::CAP_PROP_POS_MSEC, cv::CAP_PROP_POS_FRAMES, ...) or one from Additional flags for video I/O API backends
+
+value	Value of the property.
+
+Returns
+true if the property is supported by backend used by the VideoCapture instance.
+
+Note
+Even if it returns true this doesn't ensure that the property value has been accepted by the capture device. See note in VideoCapture::get()
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>release()
+Python:
+cv.VideoCapture.release(		) ->	None
+
+Closes video file or capturing device.
+
+The method is automatically called by subsequent VideoCapture::open and by VideoCapture destructor.
+
+
+---------------------------------VideoCaptureProperties--------------------------------------
+
+enum cv::VideoCaptureProperties
+
+cv::VideoCapture generic properties identifier.
+
+Reading / writing properties involves many layers. Some unexpected result might happens along this chain. Effective behavior depends from device hardware, driver and API Backend.
+
+cv::CAP_PROP_POS_MSEC =0, 
+Current position of the video file in milliseconds.
+
+cv::CAP_PROP_POS_FRAMES =1, 
+0-based index of the frame to be decoded/captured next.
+
+cv::CAP_PROP_POS_AVI_RATIO =2, 
+Relative position of the video file: 0=start of the film, 1=end of the film.
+
+cv::CAP_PROP_FRAME_WIDTH =3, 
+Width of the frames in the video stream.
+
+cv::CAP_PROP_FRAME_HEIGHT =4, 
+Height of the frames in the video stream.
+
+Entre otras mas...checar -> https://docs.opencv.org/master/d4/d15/group__videoio__flags__base.html#gaeb8dd9c89c10a5c63c139bf7c4f5704d
+
+
+---------------------------------VideoCaptureProperties--------------------------------------
+
+enum cv::VideoCaptureAPIs
+
+cv::VideoCapture API backends identifier.
+
+cv::CAP_ANY = 0, 
+Auto detect == 0.
+
+cv::CAP_VFW = 200, 
+Video For Windows (obsolete, removed)
+
+cv::CAP_V4L = 200, 
+V4L/V4L2 capturing support.
+
+cv::CAP_V4L2 = CAP_V4L, 
+Same as CAP_V4L.
+
+cv::CAP_FIREWIRE = 300, 
+IEEE 1394 drivers.
+
+
+
+
+
+
+
+
+
+
+
+
